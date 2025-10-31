@@ -2,7 +2,7 @@ import pygame
 from pygame import Surface, Vector2
 
 from circleshape import CircleShape
-from constants import PLAYER_RADIUS
+from constants import PLAYER_RADIUS, PLAYER_TURN_SPEED
 
 
 class Player(CircleShape):
@@ -31,7 +31,29 @@ class Player(CircleShape):
 
         return [a, b, c]
 
-    def draw(self, screen: Surface):
+    def rotate(self, delta_time: float) -> None:
+        """Modify player rotation.
+
+        Arguments:
+            delta_time: time passed since last frame in seconds.
+        """
+        self.rotation = PLAYER_TURN_SPEED * delta_time
+
+    def update(self, delta_time: float) -> None:
+        keys = pygame.key.get_pressed()
+
+        if keys[pygame.K_a]:
+            self.rotate(delta_time)
+        if keys[pygame.K_d]:
+            self.rotate(-delta_time)
+
+        if keys[pygame.K_w]:
+            pass
+
+        if keys[pygame.K_s]:
+            pass
+
+    def draw(self, screen: Surface) -> None:
         """Draw player shape.
 
         Arguments:

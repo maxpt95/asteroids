@@ -26,6 +26,6 @@ class CircleShape(Sprite):
         # sub-classes must override
         pass
 
-    def update(self, dt: float):
+    def update(self, delta_time: float):
         # sub-classes must override
         pass
