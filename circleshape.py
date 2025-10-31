@@ -1,7 +1,8 @@
-import pygame
+from pygame import Vector2
+from pygame.sprite import Sprite
 
 
-class CircleShape(pygame.sprite.Sprite):
+class CircleShape(Sprite):
     """A base class for circular game objects.
 
     Attributes:
@@ -17,8 +18,8 @@ class CircleShape(pygame.sprite.Sprite):
         else:
             super().__init__()
 
-        self.position = pygame.Vector2(x, y)
-        self.velocity = pygame.Vector2(0, 0)
+        self.position = Vector2(x, y)
+        self.velocity = Vector2(0, 0)
         self.radius = radius
 
     def draw(self, screen):
