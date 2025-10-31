@@ -2,7 +2,7 @@ import pygame
 from pygame import Surface, Vector2
 
 from circleshape import CircleShape
-from constants import PLAYER_RADIUS, PLAYER_TURN_SPEED
+from constants import PLAYER_RADIUS, PLAYER_TURN_SPEED, PLAYER_SPEED
 
 
 class Player(CircleShape):
@@ -35,23 +35,36 @@ class Player(CircleShape):
         """Modify player rotation.
 
         Arguments:
-            delta_time: time passed since last frame in seconds.
+            delta_time (float): time passed since last frame in seconds.
         """
         self.rotation += PLAYER_TURN_SPEED * delta_time
 
-    def update(self, delta_time: float) -> None:
-        keys = pygame.key.get_pressed()
+    def move(self, delta_time: float) -> None:
+        """Move player forward.
 
+        Arguments:
+            delta_time (float): time past since last frame in seconds.
+        """
+        # unit vector rotated to same player direction
+        forward = Vector2(0, 1).rotate(self.rotation)
+
+        self.position += forward * PLAYER_SPEED * delta_time
+
+    def update(self, delta_time: float) -> None:
+        """Update player state.
+
+        Arguments:
+            delta_time (float): time passed since last frame in seconds.
+        """
+        keys = pygame.key.get_pressed()
         if keys[pygame.K_a]:
             self.rotate(-delta_time)
         if keys[pygame.K_d]:
             self.rotate(delta_time)
-
-        # if keys[pygame.K_w]:
-        #     pass
-
-        # if keys[pygame.K_s]:
-        #     pass
+        if keys[pygame.K_w]:
+            self.move(delta_time)
+        if keys[pygame.K_s]:
+            self.move(-delta_time)
 
     def draw(self, screen: Surface) -> None:
         """Draw player shape.
