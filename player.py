@@ -37,21 +37,21 @@ class Player(CircleShape):
         Arguments:
             delta_time: time passed since last frame in seconds.
         """
-        self.rotation = PLAYER_TURN_SPEED * delta_time
+        self.rotation += PLAYER_TURN_SPEED * delta_time
 
     def update(self, delta_time: float) -> None:
         keys = pygame.key.get_pressed()
 
         if keys[pygame.K_a]:
-            self.rotate(delta_time)
-        if keys[pygame.K_d]:
             self.rotate(-delta_time)
+        if keys[pygame.K_d]:
+            self.rotate(delta_time)
 
-        if keys[pygame.K_w]:
-            pass
+        # if keys[pygame.K_w]:
+        #     pass
 
-        if keys[pygame.K_s]:
-            pass
+        # if keys[pygame.K_s]:
+        #     pass
 
     def draw(self, screen: Surface) -> None:
         """Draw player shape.

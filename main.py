@@ -16,11 +16,11 @@ class Game:
         delta_time = 0
         # game loop
         while True:
-            # check for inputs
             for event in pygame.event.get():
-                # update the game world
                 if event.type == pygame.QUIT:
                     return
+
+            self.player.update(delta_time)
 
             # draw the game in the screen
             self.screen.fill("black")
