@@ -1,4 +1,5 @@
-from pygame import Vector2
+import pygame
+from pygame import Surface, Vector2
 
 from circleshape import CircleShape
 from constants import PLAYER_RADIUS
@@ -29,3 +30,12 @@ class Player(CircleShape):
         c = self.position - forward * self.radius + right
 
         return [a, b, c]
+
+    def draw(self, screen: Surface):
+        """Draw player shape.
+
+        Arguments:
+            screen (Surface): surface where the player will be drawn.
+        """
+        triangle = self.triangle()
+        pygame.draw.polygon(screen, "white", triangle, width=2)
