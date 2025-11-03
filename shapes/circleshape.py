@@ -1,3 +1,4 @@
+import pygame
 from pygame import Surface, Vector2
 from pygame.sprite import Sprite
 
@@ -23,8 +24,13 @@ class CircleShape(Sprite):
         self.radius = radius
 
     def draw(self, screen: Surface):
-        # sub-classes must override
-        pass
+        pygame.draw.circle(
+            screen,
+            "white",
+            self.position,
+            self.radius,
+            width=2,
+        )
 
     def update(self, delta_time: float):
         # sub-classes must override
