@@ -1,10 +1,12 @@
+from typing import NamedTuple
+
 import pygame
 from pygame import Surface
-from pygame.time import Clock
 from pygame.sprite import Group
+from pygame.time import Clock
+
 from constants import SCREEN_HEIGHT, SCREEN_WIDTH
-from player import Player
-from typing import NamedTuple
+from shapes import Player
 
 
 class SpriteGroups(NamedTuple):

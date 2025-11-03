@@ -1,4 +1,4 @@
-from pygame import Vector2, Surface
+from pygame import Surface, Vector2
 from pygame.sprite import Sprite
 
 

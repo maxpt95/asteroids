@@ -1,8 +1,9 @@
 import pygame
 from pygame import Surface, Vector2
 from pygame.sprite import Group
-from circleshape import CircleShape
-from constants import PLAYER_RADIUS, PLAYER_TURN_SPEED, PLAYER_SPEED
+
+from constants import PLAYER_RADIUS, PLAYER_SPEED, PLAYER_TURN_SPEED
+from shapes.circleshape import CircleShape
 
 
 class Player(CircleShape):
