@@ -1,6 +1,6 @@
 import pygame
 from pygame import Surface, Vector2
-
+from pygame.sprite import Group
 from circleshape import CircleShape
 from constants import PLAYER_RADIUS, PLAYER_TURN_SPEED, PLAYER_SPEED
 
@@ -15,6 +15,8 @@ class Player(CircleShape):
         x (float): position in the x axis.
         y (float): position in the y axis.
     """
+
+    containers: tuple[Group, ...]
 
     def __init__(self, x: float, y: float):
         super().__init__(x, y, PLAYER_RADIUS)

@@ -1,16 +1,24 @@
 import pygame
 from pygame import Surface
 from pygame.time import Clock
-
+from pygame.sprite import Group
 from constants import SCREEN_HEIGHT, SCREEN_WIDTH
 from player import Player
+from typing import NamedTuple
+
+
+class SpriteGroups(NamedTuple):
+    """Container for game sprite groups."""
+
+    updatables: Group = Group()
+    drawables: Group = Group()
 
 
 class Game:
-    def __init__(self, player: Player):
+    def __init__(self, groups: SpriteGroups):
         self.clock = pygame.time.Clock()
         self.screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
-        self.player = player
+        self.groups = groups
 
     def run(self):
         delta_time = 0
@@ -20,11 +28,14 @@ class Game:
                 if event.type == pygame.QUIT:
                     return
 
-            self.player.update(delta_time)
+            self.groups.updatables.update(delta_time)
 
             # draw the game in the screen
             self.screen.fill("black")
-            self.player.draw(self.screen)
+
+            for obj in self.groups.drawables:
+                obj.draw(self.screen)
+
             pygame.display.flip()
             delta_time = self.clock.tick(60) / 1000
 
@@ -36,8 +47,11 @@ def main():
     print(f"Screen width: {SCREEN_WIDTH}")
     print(f"Screen height: {SCREEN_HEIGHT}")
 
+    groups = SpriteGroups()
+    Player.containers = (groups.updatables, groups.drawables)
     player = Player(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2)
-    asteroids = Game(player)
+
+    asteroids = Game(groups)
     asteroids.run()
 
 
