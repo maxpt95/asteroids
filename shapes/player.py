@@ -2,8 +2,9 @@ import pygame
 from pygame import Surface, Vector2
 from pygame.sprite import Group
 
-from constants import PLAYER_RADIUS, PLAYER_SPEED, PLAYER_TURN_SPEED
+from constants import PLAYER_RADIUS, PLAYER_SPEED, PLAYER_TURN_SPEED, PLAYER_SHOOT_SPEED
 from shapes.circleshape import CircleShape
+from shapes.shot import Shot
 
 
 class Player(CircleShape):
@@ -15,6 +16,11 @@ class Player(CircleShape):
     Arguments:
         x (float): position in the x axis.
         y (float): position in the y axis.
+    Attributes:
+        position (Vector2): position in the 2D space.
+        velocity (Vector2): velocity vector.
+        radius (float): distance between the center of the player hitbox (circle) to its border.
+        rotation (float): rotation angle.
     """
 
     containers: tuple[Group, ...]
@@ -53,6 +59,13 @@ class Player(CircleShape):
 
         self.position += forward * PLAYER_SPEED * delta_time
 
+    def shoot(self):
+        """Shoot from the player position."""
+        position: Vector2 = self.position
+        shot = Shot(position.x, position.y)
+        shot.velocity = Vector2(0, 1).rotate(self.rotation)
+        shot.velocity *= PLAYER_SHOOT_SPEED
+
     def update(self, delta_time: float) -> None:
         """Update player state.
 
@@ -68,6 +81,8 @@ class Player(CircleShape):
             self.move(delta_time)
         if keys[pygame.K_s]:
             self.move(-delta_time)
+        if keys[pygame.K_SPACE]:
+            self.shoot()
 
     def draw(self, screen: Surface) -> None:
         """Draw player shape.

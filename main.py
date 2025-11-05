@@ -7,7 +7,7 @@ from pygame.time import Clock
 
 from asteroid_field import AsteroidField
 from constants import SCREEN_HEIGHT, SCREEN_WIDTH
-from shapes import Asteroid, Player
+from shapes import Asteroid, Player, Shot
 
 
 class SpriteGroups(NamedTuple):
@@ -15,6 +15,7 @@ class SpriteGroups(NamedTuple):
 
     asteroids: Group = Group()
     drawables: Group = Group()
+    shots: Group = Group()
     updatables: Group = Group()
 
 
@@ -73,6 +74,8 @@ def main():
 
     Player.containers = (groups.updatables, groups.drawables)
     player = Player(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2)
+
+    Shot.containers = (groups.shots, groups.updatables, groups.drawables)
 
     Asteroid.containers = (groups.asteroids, groups.updatables, groups.drawables)
     AsteroidField.containers = (groups.updatables,)
