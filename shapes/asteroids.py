@@ -8,7 +8,10 @@ class Asteroid(CircleShape):
     Arguments:
         x (float): position in the x axis.
         y (float): position in the y axis.
-        radius (float): distance between the center of the asteroid to its border.
+    Attributes:
+        position (Vector2): position in the 2D space.
+        velocity (Vector2): velocity vector.
+        radius (float): distance between the center of the player hitbox (circle) to its border.
     """
 
     containers: tuple[Group, ...]

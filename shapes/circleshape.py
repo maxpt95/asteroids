@@ -8,9 +8,12 @@ from pygame.sprite import Sprite
 class CircleShape(Sprite):
     """A base class for circular game objects.
 
-    Attributes:
+    Arguments:
         x (float): position in the x axis.
         y (float): position in the y axis.
+    Attributes:
+        position (Vector2): position in the 2D space.
+        velocity (Vector2): velocity vector.
         radius (float): distance between the center of the circle to its border.
     """
 
