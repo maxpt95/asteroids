@@ -1,4 +1,5 @@
-from typing import NamedTuple
+import sys
+from typing import NamedTuple, cast
 
 import pygame
 from pygame.sprite import Group
@@ -18,12 +19,31 @@ class SpriteGroups(NamedTuple):
 
 
 class Game:
-    def __init__(self, groups: SpriteGroups):
+    def __init__(self, player: Player, groups: SpriteGroups):
         self.clock = Clock()
         self.screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
         self.groups = groups
+        self.player = player
+
+    def draw(self):
+        """Draw the game on the screen."""
+        self.screen.fill("black")
+
+        for obj in self.groups.drawables:
+            obj.draw(self.screen)
+
+        pygame.display.flip()
+
+    def is_game_over(self):
+        """True if any game over condition is met."""
+        for ast in self.groups.asteroids:
+            if ast.collides_with(self.player):
+                return True
+
+        return False
 
     def run(self):
+        """Run the game."""
         delta_time = 0
         # game loop
         while True:
@@ -33,13 +53,12 @@ class Game:
 
             self.groups.updatables.update(delta_time)
 
-            # draw the game in the screen
-            self.screen.fill("black")
+            if self.is_game_over():
+                print("Game over!")
+                sys.exit()
 
-            for obj in self.groups.drawables:
-                obj.draw(self.screen)
+            self.draw()
 
-            pygame.display.flip()
             delta_time = self.clock.tick(60) / 1000
 
 
@@ -59,7 +78,7 @@ def main():
     AsteroidField.containers = (groups.updatables,)
     asteroid_field = AsteroidField()
 
-    game = Game(groups)
+    game = Game(player, groups)
     game.run()
 
 
