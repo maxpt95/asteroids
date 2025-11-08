@@ -1,5 +1,5 @@
 import sys
-from typing import NamedTuple, cast
+from typing import NamedTuple
 
 import pygame
 from pygame.sprite import Group
@@ -8,6 +8,7 @@ from pygame.time import Clock
 from asteroid_field import AsteroidField
 from constants import SCREEN_HEIGHT, SCREEN_WIDTH
 from shapes import Asteroid, Player, Shot
+from logger import log_state
 
 
 class SpriteGroups(NamedTuple):
@@ -45,6 +46,7 @@ class Game:
 
     def run(self):
         """Run the game."""
+        _ = AsteroidField()
         delta_time = 0
         # game loop
         while True:
@@ -61,6 +63,7 @@ class Game:
             self.draw()
 
             delta_time = self.clock.tick(60) / 1000
+            log_state()
 
 
 def main():
@@ -79,7 +82,6 @@ def main():
 
     Asteroid.containers = (groups.asteroids, groups.updatables, groups.drawables)
     AsteroidField.containers = (groups.updatables,)
-    asteroid_field = AsteroidField()
 
     game = Game(player, groups)
     game.run()
