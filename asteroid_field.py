@@ -1,7 +1,7 @@
 import random
 
 import pygame
-from pygame.sprite import AbstractGroup, Group, Sprite
+from pygame.sprite import Group, Sprite
 from pygame import Vector2
 from constants import (
     ASTEROID_KINDS,
@@ -53,12 +53,20 @@ class AsteroidField(Sprite):
         super().__init__(self.containers)  # type: ignore
         self.spawn_timer = 0.0
 
-    def spawn(self, radius, position, velocity):
+    def spawn(self, radius: float, position: Vector2, velocity: Vector2):
+        """Spawn a new asteroid.
+
+        Arguments:
+            radius (float): distance from the center of the asteroids to its border.
+            position (Vector2): position in the 2D space.
+            velocity (Vector2): asteroid's speed.
+        """
         asteroid = Asteroid(position.x, position.y, radius)
         asteroid.velocity = velocity
 
-    def update(self, dt):
-        self.spawn_timer += dt
+    def update(self, delta_time: float):
+        """Update asteroid field state."""
+        self.spawn_timer += delta_time
         if self.spawn_timer > ASTEROID_SPAWN_RATE:
             self.spawn_timer = 0
 
