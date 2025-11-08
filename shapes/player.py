@@ -2,7 +2,13 @@ import pygame
 from pygame import Surface, Vector2
 from pygame.sprite import Group
 
-from constants import PLAYER_RADIUS, PLAYER_SPEED, PLAYER_TURN_SPEED, PLAYER_SHOOT_SPEED
+from constants import (
+    PLAYER_RADIUS,
+    PLAYER_SPEED,
+    PLAYER_TURN_SPEED,
+    PLAYER_SHOOT_SPEED,
+    PLAYER_SHOOT_COOLDOWN_SECONDS,
+)
 from shapes.circleshape import CircleShape
 from shapes.shot import Shot
 
@@ -28,6 +34,7 @@ class Player(CircleShape):
     def __init__(self, x: float, y: float):
         super().__init__(x, y, PLAYER_RADIUS)
         self.rotation = 0
+        self.shoot_cooldown = 0
 
     def triangle(self) -> list[Vector2]:
         """Calculate the 3 vertices of the triangle representing the player."""
@@ -59,8 +66,13 @@ class Player(CircleShape):
 
         self.position += forward * PLAYER_SPEED * delta_time
 
-    def shoot(self):
+    def shoot(self) -> None:
         """Shoot from the player position."""
+        if self.shoot_cooldown > 0:
+            return
+
+        self.shoot_cooldown = PLAYER_SHOOT_COOLDOWN_SECONDS
+
         position: Vector2 = self.position
         shot = Shot(position.x, position.y)
         shot.velocity = Vector2(0, 1).rotate(self.rotation)
@@ -72,6 +84,8 @@ class Player(CircleShape):
         Arguments:
             delta_time (float): time passed since last frame in seconds.
         """
+        self.shoot_cooldown -= delta_time
+
         keys = pygame.key.get_pressed()
         if keys[pygame.K_a]:
             self.rotate(-delta_time)
