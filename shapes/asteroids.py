@@ -1,5 +1,11 @@
-from shapes.circleshape import CircleShape
+import random
+
+from pygame import Vector2
 from pygame.sprite import Group
+
+from constants import ASTEROID_MIN_RADIUS
+from logger import log_event
+from shapes.circleshape import CircleShape
 
 
 class Asteroid(CircleShape):
@@ -26,3 +32,27 @@ class Asteroid(CircleShape):
             delta_time (float): time passed since last frame in seconds.
         """
         self.position += self.velocity * delta_time
+
+    def split(self) -> None:
+        """Split asteroid into two smaller asteroids."""
+        self.kill()
+        if self.radius == ASTEROID_MIN_RADIUS:
+            return
+
+        log_event("asteroid_split")
+
+        fragments_radius = self.radius - ASTEROID_MIN_RADIUS
+
+        position: Vector2 = self.position
+        fragments_parameters = (position.x, position.y, fragments_radius)
+        fragment_1, fragment_2 = (
+            Asteroid(*fragments_parameters),
+            Asteroid(*fragments_parameters),
+        )
+
+        # Fragments velocities, each one with an angle oposite to the other
+        fragment_angle = random.uniform(20, 50)
+        fragment_1_velocity = self.velocity.rotate(fragment_angle)
+        fragment_2_velocity = self.velocity.rotate(-fragment_angle)
+        fragment_1.velocity = fragment_1_velocity
+        fragment_2.velocity = fragment_2_velocity
