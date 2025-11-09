@@ -8,7 +8,7 @@ from pygame.time import Clock
 from asteroid_field import AsteroidField
 from constants import SCREEN_HEIGHT, SCREEN_WIDTH
 from shapes import Asteroid, Player, Shot
-from logger import log_state
+from logger import log_state, log_event
 
 
 def main():
@@ -49,6 +49,11 @@ def main():
             if ast.collides_with(player):
                 print("Game over!")
                 sys.exit()
+            for shot in shots:
+                if ast.collides_with(shot):
+                    log_event("asteroid_shot")
+                    ast.kill()
+                    shot.kill()
 
         screen.fill("black")
 
